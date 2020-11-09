@@ -16,7 +16,8 @@ def draw_contours(image_src):
     # draw the contours in black background
     result = np.zeros(image.size(), dtype=np.uint8)
     cv2.drawContours(result, contours, -1, (255, 255, 255), 2)
-    result_line = np.zeros(image.size(), dtype=np.uint8)  # 定义绘制直线的白布
+    result_line = np.zeros(image.size(), dtype=np.uint8)  
+    # white line
     result_line.fill(255)
     src_image = result.copy()
     lines = cv2.HoughLinesP(src_image, 1, math.pi / 180, 50, 30, 5)
