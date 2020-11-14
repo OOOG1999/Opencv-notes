@@ -67,3 +67,50 @@ M = cv2.getPerspectiveTransform(pts,pts1)
  
 dst = cv2.warpPerspective(a,M,(1920,1080))
 ```
+## Color space
+img_hsv = cv2.cvtColor(img_original, cv2.COLOR_BGR2HSV)  # Convert imgOriginal from BGR to HSV<br>
+The second parameter: <br>
+LAB：L light, A green-red, B blue-yellow<br>
+HSI: H 色相 360°, S 饱和度 [0, 1] 颜色的深浅程度, I(Intensity)亮度  0% (黑色) 到 100% (白色)<br>
+HSV: V 明度 V = 0黑色, S = 0白色<br>
+## 直方图均衡化
+```
+   hsv_split = cv2.split(img_hsv)
+    hsv_split[2] = cv2.equalizeHist(hsv_split[2])
+    img_hsv = cv2.merge(hsv_split)
+```
+增强局部的对比度而不影响整体的对比度<br>
+在颜色提取中增加准确率<br>
+## 腐蚀和膨胀
+```
+    element = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))  # 形态学滤波核大小，根据实际情况试出
+    img_thr = cv2.morphologyEx(img_thr, cv2.MORPH_OPEN, element)
+    # 闭操作 (连接一些连通域)
+    img_thr = cv2.morphologyEx(img_thr, cv2.MORPH_CLOSE, element)
+ ```
+ 腐蚀：减小高亮区域
+ 膨胀：扩大高亮区域
+ ```
+ enum MorphTypes{
+    MORPH_ERODE    = 0, //腐蚀
+    MORPH_DILATE   = 1, //膨胀
+    MORPH_OPEN     = 2, //开操作
+    MORPH_CLOSE    = 3, //闭操作
+    MORPH_GRADIENT = 4, //梯度操作
+    MORPH_TOPHAT   = 5, //顶帽操作
+    MORPH_BLACKHAT = 6, //黑帽操作
+    MORPH_HITMISS  = 7  
+};
+ ```
+## 直线检测
+```
+HoughLinesP(image, rho, theta, threshold, lines=None, minLineLength=None, maxLineGap=None) 
+
+image： 必须是二值图像，推荐使用canny边缘检测的结果图像； 
+rho: 线段以像素为单位的距离精度，double类型的，推荐用1.0 
+theta： 线段以弧度为单位的角度精度，推荐用numpy.pi/180 
+threshod: 累加平面的阈值参数，int类型，超过设定阈值才被检测出线段，值越大，基本上意味着检出的线段越长，检出的线段个数越少。根据情况推荐先用100试试
+lines：这个参数的意义未知，发现不同的lines对结果没影响，但是不要忽略了它的存在 
+minLineLength：线段以像素为单位的最小长度，根据应用场景设置 
+maxLineGap：同一方向上两条线段判定为一条线段的最大允许间隔（断裂），超过了设定值，则把两条线段当成一条线段，值越大，允许线段上的断裂越大，越有可能检出潜在的直线段
+```
