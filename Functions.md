@@ -55,3 +55,15 @@ img_hsv = cv2.cvtColor(img_original, cv2.COLOR_BGR2HSV)  # Convert imgOriginal f
     img_thr = cv2.morphologyEx(img_thr, cv2.MORPH_CLOSE, element)
     #后续可描轮廓或进行位置判定
 ```
+## Perspective translation
+We need 8 points, 4 original picture and 4 transform points
+
+```
+pts = np.float32([ [0,0],[0,1080],[1920,1080],[1920,0] ])
+ 
+pts1 = np.float32([[100,0],[200,1080],[1720,1080],[1920,0]])
+ 
+M = cv2.getPerspectiveTransform(pts,pts1)
+ 
+dst = cv2.warpPerspective(a,M,(1920,1080))
+```
