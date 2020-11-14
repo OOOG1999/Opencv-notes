@@ -114,3 +114,22 @@ lines：这个参数的意义未知，发现不同的lines对结果没影响，�
 minLineLength：线段以像素为单位的最小长度，根据应用场景设置 
 maxLineGap：同一方向上两条线段判定为一条线段的最大允许间隔（断裂），超过了设定值，则把两条线段当成一条线段，值越大，允许线段上的断裂越大，越有可能检出潜在的直线段
 ```
+## 对比二值化
+```
+cv2.adaptiveThreshold(src, maxValue, adaptiveMethod, thresholdType, blockSize, C, dst=None)
+
+src：需要进行二值化的一张灰度图像
+
+maxValue：满足条件的像素点需要设置的灰度值。（将要设置的灰度值）
+
+adaptiveMethod：自适应阈值算法。可选ADAPTIVE_THRESH_MEAN_C 或 ADAPTIVE_THRESH_GAUSSIAN_C
+
+thresholdType：opencv提供的二值化方法，只能THRESH_BINARY或者THRESH_BINARY_INV
+
+blockSize：要分成的区域大小，上面的N值，一般取奇数
+
+C：常数，每个区域计算出的阈值的基础上在减去这个常数作为这个区域的最终阈值，可以为负数
+
+dst：输出图像，可以忽略
+```
+
